@@ -49,7 +49,7 @@ class HandRecogGUI:
         self.submit = Rect(280, 185, 80, 30)
         self.text_pos.append((937, 194)) # text pos for submit button
 
-        # initialize the getting surface for seeing the guestures to commands
+        # initialize the getting surface for seeing the guestures to commands 
         self.get_surface = pygame.Surface((640, 200))
         pygame.draw.line(self.get_surface, pygame.Color(255, 255, 255), (0,0), (0, 200))
         pygame.draw.line(self.get_surface, pygame.Color(255, 255, 255), (0,0), (640, 0))
@@ -204,6 +204,4 @@ class HandRecogGUI:
                         self.rectangles[self.selected_action[1][1]][0] = pygame.Color(0, 255, 255)
                         self.selected_gesture = []
                         self.selected_action = []
-
-
         return False

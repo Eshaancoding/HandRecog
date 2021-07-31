@@ -12,20 +12,7 @@ maxRange = np.array([235, 173, 127], np.uint8)
 def preprocess (image):
     YCRImage = cv2.cvtColor(image, cv2.COLOR_BGR2YCR_CB)
     skinArea = cv2.inRange(YCRImage, minRange, maxRange)
-    masked_image = cv2.bitwise_and(image, image, mask=skinArea)
-    no_black = np.where(
-        (masked_image[:, :, 0] != 0) & 
-        (masked_image[:, :, 1] != 0) &
-        (masked_image[:, :, 2] != 0) 
-    )
-    black = np.where(
-        (masked_image[:, :, 0] == 0) & 
-        (masked_image[:, :, 1] == 0) &
-        (masked_image[:, :, 2] == 0) 
-    )
-    masked_image[no_black] = [255, 255, 255]
-    masked_image[black] = [0,0,0]
-    return cv2.cvtColor(cv2.resize(masked_image, (320, 120)), cv2.COLOR_RGB2GRAY)
+    return cv2.resize(skinArea, (320, 120))
 
 def majority_black (image):
     black = np.where(
@@ -63,11 +50,6 @@ else:
     rval = False
 prediction = ""
 while rval:
-    # update pygame window
-    if gui.draw(frame, prediction):
-        vc.release()
-        exit(0)
-
     # process image and get NN output
     rval, no_precessing_frame = vc.read()
     frame = preprocess(no_precessing_frame)
@@ -77,3 +59,8 @@ while rval:
     else:
         prediction = "None"
         gui.reset_last_action()
+    
+    # update pygame window
+    if gui.draw(frame, prediction):
+        vc.release()
+        exit(0)
